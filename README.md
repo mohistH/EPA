@@ -31,9 +31,12 @@
 
 
 
-# 7 构建顺序
+# 7 构建
+## 7.1 构建顺序
 - 因为 **EPA** 依赖 **OctExeDllVersion**。 故 **须先** 构建 OctExeDllVersion, **再** 构建 EPA， 方可成功
 - **OctExeDllVersion** 提供动态库对应的 cmake-config文件，详见：path/OctExeDllVersion/cmake目录
+## 7.2 Qt设置
+- 打开 EAP/CMakeLists.txt， 将 **\"C:/major/development/tools/qt/5.14/install/5.14.2/msvc2015_64\"** 改为对应的Qt安装路径后 ，再执行构建
 
 
 # 8 主程序UI概览
