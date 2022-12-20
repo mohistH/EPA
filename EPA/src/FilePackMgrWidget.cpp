@@ -168,6 +168,7 @@ void FilePackMgrWidget::init()
 
 		ptv->horizontalHeader()->setSectionResizeMode(QHeaderView::ResizeToContents);
 
+		connect(exe_dll_md_.delegate_.data(), &ExeDllFileDelegate::sigParseExeDll, this, &FilePackMgrWidget::sigParseExeDll);
 	}
 
 	/// 安装包项目

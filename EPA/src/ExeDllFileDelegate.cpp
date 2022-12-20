@@ -258,6 +258,7 @@ void ExeDllFileDelegate::setColumnEditorData01(QWidget* editor, const QModelInde
 		{
 			btn_new_name = select_file;
 			last_dir = select_file.left(select_file.lastIndexOf("/"));
+			emit sigParseExeDll(index.row(), btn_new_name);
 		}
 		else
 		{

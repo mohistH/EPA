@@ -36,7 +36,7 @@
 - 因为 **EPA** 依赖 **OctExeDllVersion**。 故 **须先** 构建 OctExeDllVersion, **再** 构建 EPA， 方可成功
 - **OctExeDllVersion** 提供动态库对应的 cmake-config文件，详见：path/OctExeDllVersion/cmake目录
 ## 7.2 Qt设置
-- 打开 EAP/CMakeLists.txt， 将 **\"C:/major/development/tools/qt/5.14/install/5.14.2/msvc2015_64\"** 改为对应的Qt安装路径后 ，再执行构建
+- 打开 EAP/CMakeLists.txt， 将 **"\C:/major/development/tools/qt/5.14/install/5.14.2/msvc2015_64\"** 改为对应的Qt安装路径后 ，再执行构建
 
 
 # 8 主程序UI概览
@@ -53,6 +53,13 @@
 
 
 # 10 更新日志
+### 2022-12-20 v.0.0.0.2
+- 1 修复不能读取所有devenv.exe的BUG
+- 2 修复 OctExeDllVersion 读取exe和dll的BUG：迭代器起始位置为end(正确为begin)
+- 3 OctExeDllVersion 修复字符串分割错误的问题
+- 5 增加初始化时，解析可执行程序的版本号
+
+
 ### 2022-12-18 V0.0.0.1
 - 1 增加输出结果控件， 用于提示用户当前操作状态
 - 2 修复删除的BUG（多行删除）

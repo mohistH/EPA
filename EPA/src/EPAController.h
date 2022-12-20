@@ -77,6 +77,15 @@ namespace oct_epa
 		/// -------------------------------------------------------------------------------
 		void slotCloseSl3File();
 
+		/// -------------------------------------------------------------------------------
+		/// @brief:		解析文件版本号
+		/// @param: 	const int row_index - 
+		/// @param: 	const QString & select_file - 
+		///  @ret:		void
+		///				
+		/// -------------------------------------------------------------------------------
+		void slotParseExeDll(const int row_index, const QString& select_file);
+
 	private:
 		int init();
 		void uninit();
@@ -87,7 +96,7 @@ namespace oct_epa
 		void initUI();
 		void setUIWidgetEnabled();
 		void readDevEnv();
-
+		void parseExeDllVersion();
 
 
 	private:

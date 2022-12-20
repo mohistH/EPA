@@ -370,5 +370,17 @@
         <source>the process crashes</source>
         <translation>进程崩溃</translation>
     </message>
+    <message>
+        <source>[EXE_DLL]</source>
+        <translation> [可执行程序] </translation>
+    </message>
+    <message>
+        <source> internal error or row index is negative</source>
+        <translation>内部错误，或者行索引小于0</translation>
+    </message>
+    <message>
+        <source>please select a file</source>
+        <translation>请选择文件</translation>
+    </message>
 </context>
 </TS>

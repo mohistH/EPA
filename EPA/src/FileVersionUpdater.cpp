@@ -60,6 +60,64 @@ namespace oct_epa
 		return 0;
 	}
 
+	/// --------------------------------------------------------------------------------
+	/// @brief: 读取exedll中的版本号
+	/// --------------------------------------------------------------------------------
+	int FileVersionUpdater::Read(MapExeDllVersionInfo& map_file)
+	{
+		if (0 == map_file.count())
+		{
+			return 2;
+		}
+
+		oct_vi::MapStrStr map_src_file;
+		oct_vi::MapVersionInfo map_out_version;
+		{
+
+			for (MapExeDllVersionInfo::iterator find_it = map_file.begin(); find_it != map_file.end(); ++find_it)
+			{
+				oct_vi::stFileState fs;
+				fs.file_ = VersionHelper::qstr2str(find_it->file_name_);
+
+				map_src_file.emplace(fs.file_, fs);
+			}
+		}
+
+		/// 读取
+		if (nullptr == pexe_version_)
+		{
+			return 1;
+		}
+
+		/// 读取数据后， 再重新赋值
+		const int ret_value = pexe_version_->Read(map_src_file, map_out_version);
+		{
+			for (MapExeDllVersionInfo::iterator file_it = map_file.begin(); file_it != map_file.end(); ++file_it)
+			{
+				const std::string& std_file = VersionHelper::qstr2str(file_it->file_name_);
+				oct_vi::MapVersionInfo::iterator exe_dll_it = map_out_version.find(std_file);
+
+				if (exe_dll_it == map_out_version.end())
+				{
+					continue;
+				}
+				/// 赋值
+				file_it->file_major_ = exe_dll_it->second.file_.major_;
+				file_it->file_minor_ = exe_dll_it->second.file_.minor_;
+				file_it->file_revision_ = exe_dll_it->second.file_.revision_;
+				file_it->file_build_ = exe_dll_it->second.file_.build_;
+
+				/// 
+				file_it->project_major_ = exe_dll_it->second.product_.major_;
+				file_it->project_minor_ = exe_dll_it->second.product_.minor_;
+				file_it->project_revision_ = exe_dll_it->second.product_.revision_;
+				file_it->project_build_ = VersionHelper::str2qstr(exe_dll_it->second.product_.build_);
+			}
+		}
+
+		return ret_value;
+	}
+
 	QString FileVersionUpdater::ErrorStr()
 	{
 		return error_str_;

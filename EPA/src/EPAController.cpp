@@ -42,6 +42,7 @@ namespace oct_epa
 		}
 
 
+
 		initUI();
 		loadLanguage();
 	}
@@ -238,6 +239,59 @@ namespace oct_epa
 	}
 
 	/// --------------------------------------------------------------------------------
+	/// @brief: 解析文件版本号
+	/// --------------------------------------------------------------------------------
+	void EPAController::slotParseExeDll(const int row_index, const QString& select_file)
+	{
+		FileVersionUpdater* pfvu = pversion_updater_.data();
+		if ((nullptr == pfvu) || (0 > row_index))
+		{
+			setHint(tr("[EXE_DLL]") + tr(" internal error or row index is negative"));
+			return;
+		}
+
+		/// 读取文件exe内容
+		MapExeDllVersionInfo map_out_file;
+		{
+			stExeDllVersionInfo evi;
+			evi.file_name_ = select_file;
+			map_out_file.insert(evi.project_name_, evi);
+
+			int ret = pfvu->Read(map_out_file);
+			if (0 != ret)
+			{
+				setHint(tr("[EXE_DLL]") + tr("please select a file"));
+				return;
+			}
+		}
+		/// 修改list_model中对应的数据，再赋值
+		ListExeDllVersionInfo list_exe_dll_data;
+		main_widget_.data()->exeDllModelData(&list_exe_dll_data);
+
+		/// 赋值
+
+		{
+			/// 读取结果
+			stExeDllVersionInfo read_item;
+			{
+				MapExeDllVersionInfo::iterator find_it = map_out_file.begin();
+				read_item = find_it.value();
+			}
+			stExeDllVersionInfo target_item = list_exe_dll_data.at(row_index);
+
+			/// 仅修改界面的版本号
+			read_item.project_name_ = target_item.project_name_;
+			read_item.batch_file_ = target_item.batch_file_;
+			target_item = read_item;
+
+			list_exe_dll_data[row_index] = target_item;
+		}
+
+		/// 显示数据
+		main_widget_.data()->setExeDllModelData(&list_exe_dll_data);
+	}
+
+	/// --------------------------------------------------------------------------------
 	/// @brief: EPAController::init
 	/// --------------------------------------------------------------------------------
 	int EPAController::init()
@@ -253,6 +307,9 @@ namespace oct_epa
 		}
 		else
 		{
+			/// 解析exe和dll的版本信息
+			parseExeDllVersion();
+
 			/// 解析配置文件中，安装包表中的compiler 是否在当前操作系统中devnenv中
 			file_record_.processInstallPrjectData();
 
@@ -349,6 +406,8 @@ namespace oct_epa
 		connect(pmgr_widget, &FilePackMgrWidget::sigDevEnvApplyPressed, this, &EPAController::slotDevEnvApplyPressed);
 		connect(pmgr_widget, &FilePackMgrWidget::sigExeDllApplyPressed, this, &EPAController::slotExeDllApplyPressed);
 		connect(pmgr_widget, &FilePackMgrWidget::sigVdprojApplyPressed, this, &EPAController::slotVdprojApplyPressed);
+		connect(pmgr_widget, &FilePackMgrWidget::sigParseExeDll, this, &EPAController::slotParseExeDll);
+
 		connect(main_widget_.data(), &ExePackAssistant::sigCreateFile, this, &EPAController::slotCreateSl3File);
 		connect(main_widget_.data(), &ExePackAssistant::sigOpenFile, this, &EPAController::slotOpenSl3File);
 		connect(main_widget_.data(), &ExePackAssistant::sigClose, this, &EPAController::slotCloseSl3File);
@@ -406,6 +465,18 @@ namespace oct_epa
 		}
 
 		DevEnvHelper::ins().set(fr.devenv()->values());
+	}
+
+	/// --------------------------------------------------------------------------------
+	/// @brief: 初始化后，解析exe和dll的版本号
+	/// --------------------------------------------------------------------------------
+	void EPAController::parseExeDllVersion()
+	{
+		MapExeDllVersionInfo* map_exe_dll = file_record_.exeDllVersion();
+		if (0 == pversion_updater_.data()->Read(*map_exe_dll))
+		{
+			/// 读取成功后，
+		}
 	}
 
 	/// --------------------------------------------------------------------------------

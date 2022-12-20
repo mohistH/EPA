@@ -23,7 +23,7 @@ std::string VersionHelper::qstr2str(const QString& str)
 
 QString VersionHelper::str2qstr(const std::string& str)
 {
-	return "";
+	return QString::fromLocal8Bit(QByteArray::fromRawData(str.c_str(), str.length()));
 }
 
 /// --------------------------------------------------------------------------------

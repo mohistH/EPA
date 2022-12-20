@@ -18,7 +18,7 @@ include(${common_cmake})
 
 # option 
 option(oct_epa_enabled "OCT_EPA PROJECT IS ENABLED" ON)
-option(oct_exe_dll_version_enabled "OCT_EPA PROJECT IS ENABLED" Off)
+option(oct_exe_dll_version_enabled "OCT_EPA PROJECT IS ENABLED" ON)
 
 
 # 主工程

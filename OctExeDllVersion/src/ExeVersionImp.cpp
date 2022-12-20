@@ -37,7 +37,7 @@ namespace oct_vi
 		stFileProductVersion fpv;
 
 		/// 遍历文件
-		for (MapStrStr::iterator fileIt = map_file.end(); fileIt != map_file.end(); ++fileIt)
+		for (MapStrStr::iterator fileIt = map_file.begin(); fileIt != map_file.end(); ++fileIt)
 		{
 			if (FALSE == PathFileExistsA(fileIt->second.file_.c_str()))
 			{
@@ -185,15 +185,20 @@ namespace oct_vi
 	/// --------------------------------------------------------------------------------
 	void ExeVersionImp::SplitCStr(CString source, CStringArray& dest, CString division)
 	{
-		dest.RemoveAll();
-		int pos = 0;
-		int pre_pos = 0;
-		while (-1 != pos)
+		dest.RemoveAll();//自带清空属性
+		CString temp = source;
+		int tag = 0;
+		while (1)
 		{
-			pre_pos = pos;
-			pos = source.Find(division, (pos + 1));
-			dest.Add(source.Mid(pre_pos, (pos - pre_pos)));
+			tag = temp.Find(division);
+			if (tag >= 0)
+			{
+				dest.Add(temp.Left(tag));
+				temp = temp.Right(temp.GetLength() - tag - 1);
+			}
+			else { break; }
 		}
+		dest.Add(temp);
 
 	}
 

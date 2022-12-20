@@ -8,6 +8,9 @@ class ExeDllFileDelegate : public AItemDelegate
 {
 	Q_OBJECT
 
+signals:
+	void sigParseExeDll(const int row_index, const QString& select_file) const;
+
 public:
 	explicit ExeDllFileDelegate(QObject* parent = nullptr);
 	virtual  ~ExeDllFileDelegate();

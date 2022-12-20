@@ -7,6 +7,8 @@
 #include <QJsonArray>
 #include <QJsonParseError>
 #include <QDebug>
+#include <QSettings>
+#include <QFile>
 
 namespace oct_epa
 {
@@ -16,7 +18,22 @@ namespace oct_epa
 	/// --------------------------------------------------------------------------------
 	VSWhereHelper::VSWhereHelper()
 	{
+		HashVS2010_VS2015& hash_vs = hash_vs2010_vs2015_;
 
+		stVS2010_VS2015 item_hash;
+		auto insert_hash = [&hash_vs, &item_hash](const QString& key, const QString& name)
+		{
+			item_hash.zero();
+			item_hash.set(key, name);
+
+			hash_vs.insert(item_hash.vs_name_, item_hash);
+		};
+
+		const QString& key_suffix = "/InstallDir";
+		insert_hash("10.0" + key_suffix, "Visual Studio 2010");
+		insert_hash("11.0" + key_suffix, "Visual Studio 2012");
+		insert_hash("12.0" + key_suffix, "Visual Studio 2013");
+		insert_hash("14.0" + key_suffix, "Visual Studio 2015");
 	}
 
 	/// --------------------------------------------------------------------------------
@@ -37,6 +54,18 @@ namespace oct_epa
 		{
 			return 1;
 		}
+
+		readVS2017Upper(pout_dei);
+		readVS2015Lower(pout_dei);
+
+		return 0;
+	}
+
+	/// --------------------------------------------------------------------------------
+	/// @brief: VSWhereHelper::readVS2017Upper
+	/// --------------------------------------------------------------------------------
+	int VSWhereHelper::readVS2017Upper(MapDevEnvInfo* pout_dei)
+	{
 
 		/// 用于保存结果
 		QByteArray ba_vs;
@@ -124,6 +153,57 @@ namespace oct_epa
 			pout_dei->insert(dev_info.name_, dev_info);
 
 			dev_info.zero();
+		}
+
+		return 0;
+	}
+
+	/// --------------------------------------------------------------------------------
+	/// @brief: VSWhereHelper::readVS2015Lower
+	/// --------------------------------------------------------------------------------
+	int VSWhereHelper::readVS2015Lower(MapDevEnvInfo* pout_dei)
+	{
+		//const QString&& reg_key_prefix = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\VisualStudio";
+		const QString&& reg_key_prefix = "HKEY_LOCAL_MACHINE\\SOFTWARE\\WOW6432Node\\Microsoft\\VisualStudio\\";
+		QSettings reg_edit(reg_key_prefix, QSettings::Registry64Format);// NativeFormat);/// QSettings::Registry64Format);
+		stDevEnvInfo dev_info;
+
+
+		//QStringList key_list = reg_edit.allKeys();
+		QString str_tmp_2 = reg_edit.value("ApplicationID").toString();
+		if (0 != str_tmp_2.length())
+		{
+			int x = 0;
+		}
+
+		/// 遍历注册表for (const autos item hash : hash vs2010 2015 
+		///读取键值，如果为空，则继续读取: 得到的是 path/common7/IDE目录OStringo dev_env_namereg_edit.value(item_hash.reg_key_).tostring()if (adev_env_name .length( ))
+		for (const auto& item_hash : hash_vs2010_vs2015_)
+		{
+			/// 读取简直
+			QString dev_env_name = reg_edit.value(item_hash.reg_key_).toString();
+			if (0 == dev_env_name.trimmed().length())
+			{
+				continue;
+			}
+
+			dev_env_name += "/devenv.exe";
+
+			/// 文件不存在。
+			{
+				QFile dev_env_file(dev_env_name);
+				if (false == dev_env_file.exists())
+				{
+					continue;
+				}
+			}
+
+			dev_info.devenv_ = dev_env_name;
+			dev_info.name_ = item_hash.vs_name_;
+			pout_dei->insert(dev_info.name_, dev_info);
+
+			dev_info.zero();
+
 		}
 
 		return 0;

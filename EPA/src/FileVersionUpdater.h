@@ -19,6 +19,8 @@ namespace oct_epa
 
 		/// 读取参数中的文件版本信息
 		int Read(MapInstallProjectVersion& map_file);
+		/// 读取exedll中的版本号
+		int Read(MapExeDllVersionInfo& map_file);
 
 		/// 写入参数中的版本信息
 		int Write(MapExeDllVersionInfo* map_write);

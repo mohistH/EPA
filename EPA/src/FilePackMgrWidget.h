@@ -46,6 +46,8 @@ signals:
 	/// hint, 参数不为空
 	void sigShowHint(const QString& text);
 
+	/// 解析exedll
+	void sigParseExeDll(const int row_index, const QString& select_file) const;
 
 public:
 	explicit FilePackMgrWidget(QWidget* parent = nullptr);
