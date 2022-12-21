@@ -1,3 +1,6 @@
+# 0 源码获取
+- [gitee](https://gitee.com/mohistH/epa)
+- [github](https://github.com/mohistH/EPA)
 
 # 1 概述
 - 这是一款用于修改 **windows** 可执行程序（ exe、dll）版本号 和 修改VS安装项目（.vdproj）版本号的小程序。 
@@ -53,6 +56,10 @@
 
 
 # 10 更新日志
+### 2022-12-20 v.0.0.0.2
+- 1 epa/CMAKELISTS.TXt 将链接动态库改为PRIVATE
+
+
 ### 2022-12-20 v.0.0.0.2
 - 1 修复不能读取所有devenv.exe的BUG
 - 2 修复 OctExeDllVersion 读取exe和dll的BUG：迭代器起始位置为end(正确为begin)

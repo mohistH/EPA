@@ -85,7 +85,7 @@ target_link_libraries(${PROJECT_NAME}
 
 # 需要链接 自己 专门修改exe和dll的动态库
 target_link_libraries(${PROJECT_NAME}
-	PUBLIC oct::edv
+	PRIVATE oct::edv
 	)
 
 
