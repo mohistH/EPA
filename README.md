@@ -2,6 +2,9 @@
 - [gitee](https://gitee.com/mohistH/epa)
 - [github](https://github.com/mohistH/EPA)
 
+## 引用项目
+- [https://gitee.com/peng_weijie/cpptools](https://gitee.com/peng_weijie/cpptools)
+
 # 1 概述
 - 这是一款用于修改 **windows** 可执行程序（ exe、dll）版本号 和 修改VS安装项目（.vdproj）版本号的小程序。 
 - 可执行程序可修改： 文件版本和产品版本
