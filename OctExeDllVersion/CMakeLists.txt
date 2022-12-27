@@ -6,8 +6,6 @@ set(oct_edv_root
 	${CMAKE_CURRENT_SOURCE_DIR}/src
 )
 
-# 1. 打开允许创建文件夹的开关
-set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
 
 
@@ -59,10 +57,6 @@ if (CMAKE_SYSTEM_NAME MATCHES "Windows")
 	copy_folder_macro(${CMAKE_CURRENT_SOURCE_DIR}/cmake ${common_cmake_root})
 
 
-	# 2. 把工程加到文件夹中
-	set_target_properties(${PROJECT_NAME} PROPERTIES FOLDER "CMakeTargets")
-	# 3. 给 cmake 自动创建的工程重新命名, 默认名为 "CMakePredefinedTargets" 
-	set_property(GLOBAL PROPERTY PREDEFINED_TARGETS_FOLDER "CMakeTargets")
 
 	# 如果是windows，设置管理员权限。注意使用if需要配合endif使用
 	if (CMAKE_SYSTEM_NAME MATCHES "Windows")
